@@ -4,15 +4,20 @@ defmodule ConcurrentTaskPool do
   """
 
   @doc """
-  Hello world.
+  Spawns concurrent workers.
 
   ## Examples
 
-      iex> ConcurrentTaskPool.hello()
-      :world
+      iex> ConcurrentTaskPool.spawn_tasks(1)
+      :ok
 
   """
-  def hello do
-    :world
+  def spawn_tasks(count \\ 5) do
+    Enum.each(1..count, fn id ->
+      DynamicSupervisor.start_child(
+        ConcurrentTaskPool.TaskSupervisor,
+        {ConcurrentTaskPool.Worker, id}
+      )
+    end)
   end
 end

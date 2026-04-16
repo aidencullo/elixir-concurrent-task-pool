@@ -8,8 +8,7 @@ defmodule ConcurrentTaskPool.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: ConcurrentTaskPool.Worker.start_link(arg)
-      # {ConcurrentTaskPool.Worker, arg}
+      {DynamicSupervisor, strategy: :one_for_one, name: ConcurrentTaskPool.TaskSupervisor}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
